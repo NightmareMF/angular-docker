@@ -1,9 +1,19 @@
-FROM node:alpine
+FROM node:alpine AS build
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-COPY . /usr/src/app
+COPY package.json package-lock.json ./
 
 RUN npm install
 
-CMD ["ng", "serve", "--host", "0.0.0.0"]
+COPY . .
+
+RUN npm run build --prod
+
+FROM nginx:alpine
+
+COPY --from=build /app/dist/angular-docker /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
