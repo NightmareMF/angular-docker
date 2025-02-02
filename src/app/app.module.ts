@@ -21,8 +21,8 @@ import { appConfig } from './app.config';
     NgbModule,
     KeycloakAngularModule,
     AuthModule.forRoot({
-      domain: 'angularwebapplication.us.auth0.com',  // Replace with your Auth0 domain
-      clientId: 'pRPQMQ7dWsErZZ0trUBc01LeJuHHKKvH',   // Replace with your Auth0 client ID
+      domain: 'dev-ap3njygmes8twpv3.us.auth0.com',  // Replace with your Auth0 domain
+      clientId: 'OkpWRlHcfHKpJfqY38xz5BMX2jl9UEHC',   // Replace with your Auth0 client ID
       authorizationParams: {
         redirect_uri: window.location.origin + '/dashboard'  // Redirect after login
       }
