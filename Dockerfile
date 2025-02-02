@@ -1,18 +1,16 @@
 FROM node:alpine AS build
 
-WORKDIR /app
+WORKDIR /usr/local/app
 
-COPY package.json package-lock.json ./
+COPY ./ /usr/local/app
 
 RUN npm install
 
-COPY . .
+RUN npm run build 
 
-RUN npm run build --prod
+FROM nginx:latest
 
-FROM nginx:alpine
-
-COPY --from=build /app/dist/angular-docker /usr/share/nginx/html
+COPY --from=build /usr/local/app/dist/web-app-authentication /usr/share/nginx/html
 
 EXPOSE 80
 
