@@ -1,27 +1,22 @@
-# FROM node:alpine AS build
-
-# WORKDIR /usr/local/app
-
-# COPY ./ /usr/local/app
-
-# RUN npm install
-
-# RUN npm run build 
-
-# FROM nginx:latest
-
-# COPY --from=build /usr/local/app/dist/web-app-authentication /usr/share/nginx/html
-
-# EXPOSE 80
-
-# CMD ["nginx", "-g", "daemon off;"]
-
-
-# Use a lightweight web server
+# Use Nginx as the base image
 FROM nginx:alpine
 
-# Copy the built Angular app to Nginx
-COPY ./dist/angular-docker /usr/share/nginx/html
+# Remove default Nginx index page
+RUN rm -rf /usr/share/nginx/html/*
 
-# Expose the default Nginx port
-EXPOSE 80
+# Copy built Angular files
+COPY ./dist/web-app-authentication /usr/share/nginx/html
+
+# Copy custom Nginx configuration
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Expose HTTPS port
+EXPOSE 443
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]
+# Copy SSL certificates
+COPY ssl/cert.pem /etc/nginx/cert.pem
+COPY ssl/key.pem /etc/nginx/key.pem
+
+
